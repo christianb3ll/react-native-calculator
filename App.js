@@ -8,13 +8,15 @@ const buttonWidth = Dimensions.get('window').width / 4;
 export default function App() {
   // Setup the answer state
   const [answerValue, setAnswerValue] = useState(0);
- 
+  
+  // Stores a value in memory
   const [memoryValue, setMemoryValue] = useState(0);
+  // Stores the current operator
   const [operatorValue, setOperatorValue] = useState(0);
-
+  // Determines if screen value is to be replaced
   const [readyToReplace, setReadyToReplace] = useState(true);
 
-  // Create a reusable button component
+  // Create a reusable calculator button component
   function CalcButton(props) {
     return(
       <TouchableOpacity 
@@ -26,9 +28,11 @@ export default function App() {
     );
   }
 
+  // Called on button press
   function buttonPressed(btnValue){
     // check if value is a number
     if(!isNaN(btnValue)){
+      // Determine if number should replace or append to screen
       setAnswerValue(handleNumber(btnValue));
     }
 
@@ -41,48 +45,48 @@ export default function App() {
       setReadyToReplace(true);
     }
 
-    // if operator
-    // memoryValue to the answerValue. Set readyToReplace to true and set the operatorValue to the button operator
+    // if button value is an operator
     if(isOperator(btnValue)){
+      // Initialise currentValue variable
       var currentValue = 0;
+
+      // check if there is a current operation
       if(operatorValue != 0){
+        // calcualte the current operation
         currentValue = calculateEquals();
       }
 
       // Set the value of memoryValue to be the operation result
       setMemoryValue(currentValue);
+
       setReadyToReplace(true);
       setOperatorValue(btnValue);
-      
-    
-
     }
 
     // if equals button
     if(btnValue == '='){
-      
-      setAnswerValue(calculateEquals());
+      // Calculate Equals
+      calculateEquals();
 
       // reset values
       setMemoryValue(0);
       setReadyToReplace(true);
     }
 
-    // if +/- button pressed se the value to positive/negative
+    // if +/- button pressed set the value to positive/negative
     if(btnValue == '+/-'){
-      // set the answerValue to be the positive/negative equivalent e.g. -5 becomes +5 and +5 becomes -5
       setAnswerValue(answerValue * -Math.sign(answerValue));
     }
 
     // if percentage button, calculate percentage
     if(btnValue == '%'){
-      //  for the % functionality multiply the current value by 0.01
       setAnswerValue(answerValue * 0.01);
     }
 
     console.log(btnValue);
   }
 
+  // Deterrmine if button value is an operator and return true/false
   function isOperator(value){
     if(value == '+' ||
        value == '-' ||
@@ -97,39 +101,43 @@ export default function App() {
     // Check if value on screen should be replaced
     if(readyToReplace){
       setReadyToReplace(false);
+      // return number unchanged
       return number;
     } else {
-      // Append value to the result screen
+      // Append number to previous value on screen
       return parseInt(answerValue.toString() + number.toString());
     }
   }
 
   function calculateEquals(){
+    // initialise previous and current value variables
     var previous = parseFloat(memoryValue);
     var current = parseFloat(answerValue);
+
+    console.log('memoryValue: ' + memoryValue);
+    console.log('answerValue: ' + answerValue);
     
     switch (operatorValue) {
       case '+':
+        // ADDITION
         setAnswerValue(previous + current);
         return answerValue;
       case '-':
+        // SUBTRACTION
         setAnswerValue(previous - current);
         return answerValue;
       case 'X':
+        // MULTIPLICATION
         setAnswerValue(previous * current);
         return answerValue;
       case '/':
+        // DIVISION
         setAnswerValue(previous / current);
         return answerValue;
       default:
         
         break;
     }
-
-    // Then use a switch operator to check if the operatorValue is of a specific type e.g. +,
-    // if so set the answer value to previous + current substituting the correct operator.
-    // Make sure to also return this value to stop the switch but also allow us to get the value when
-    // calling which will come in handy later.
   }
 
   // Create the App view
