@@ -48,7 +48,7 @@ export default function App() {
     // if button value is an operator
     if(isOperator(btnValue)){
       // Initialise currentValue variable
-      var currentValue = 0;
+      var currentValue = answerValue;
 
       // check if there is a current operation
       if(operatorValue != 0){
@@ -114,8 +114,9 @@ export default function App() {
     var previous = parseFloat(memoryValue);
     var current = parseFloat(answerValue);
 
-    console.log('memoryValue: ' + memoryValue);
-    console.log('answerValue: ' + answerValue);
+    console.log('Memory Value: ' + memoryValue);
+    console.log('Answer Value: ' + answerValue);
+    console.log('Operator: ' + operatorValue);
     
     switch (operatorValue) {
       case '+':
@@ -135,7 +136,9 @@ export default function App() {
         setAnswerValue(previous / current);
         return answerValue;
       default:
-        
+        // No calculation performed
+        console.log('No Operand');
+        return answerValue;
         break;
     }
   }
