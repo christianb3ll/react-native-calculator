@@ -19,12 +19,16 @@ export default function App() {
   // Create a reusable calculator button component
   function CalcButton(props) {
     return(
-      <TouchableOpacity 
-        style={props.btnStyles}
-        onPress={()=> buttonPressed(props.btnValue)}
-      >
-        <Text style={styles.buttonText}>{props.btnValue}</Text>
-      </TouchableOpacity>
+      <View>
+        <View style={styles.buttonShadow}></View>
+        <TouchableOpacity 
+          style={props.btnStyles}
+          onPress={()=> buttonPressed(props.btnValue)}
+        >
+          <Text style={styles.buttonText}>{props.btnValue}</Text>
+        </TouchableOpacity>
+      </View>
+      
     );
   }
 
@@ -148,7 +152,10 @@ export default function App() {
    <SafeAreaView style={styles.container}>
       <View style={styles.container}>
         {/* Results Window */}
-        <Text style={styles.result}>{answerValue}</Text>
+        <View style={styles.resultContainer}>
+          <Text style={styles.result}>{answerValue}</Text>
+        </View>
+        
         <View style={styles.row}>
           <CalcButton btnStyles={[styles.button, styles.grayButton]} btnValue='C' />
           <CalcButton btnStyles={[styles.button, styles.grayButton]} btnValue='+/-' />
@@ -192,39 +199,69 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'black',
+    backgroundColor: '#e0e0e0',
     alignItems: 'bottom',
     justifyContent: 'flex-end',
   },
+  resultContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#c0ccc9'
+  },
   result: {
     flex: 1,
-    color: 'white',
-    fontSize: 48,
-    margin: '10%',
     textAlign: 'right',
-    backgroundColor: 'red'
+    margin: 10,
+    color: '#3f4d49',
+    fontSize: 60,
   },
   row: {
     flexDirection: 'row',
-    backgroundColor: 'grey'
   },
   button: {
-    backgroundColor: '#4a4a4a',
-    // margin: '10%',
-    width: buttonWidth,
-    height: buttonWidth,
-    borderRadius: 4,
+    width: buttonWidth -20,
+    height: buttonWidth -20,
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: "#e0e0e0",
+    borderRadius: 10,
+    shadowColor: "#8f8f8f",
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 20,
+    elevation: 6,
+  },
+  buttonShadow: {
+    position: "absolute",
+    backgroundColor: "#e0e0e0",
+    margin: 10,
+    width: buttonWidth -20,
+    height: buttonWidth -20,
+    borderRadius: 10,
+    shadowColor: "#ffffff",
+    shadowOffset: {
+      width: -20,
+      height: -20,
+    },
+    shadowOpacity: 1.0,
+    shadowRadius: 30,
+    elevation: 12,
   },
   wideButton: {
-    width: buttonWidth*2
+    width: buttonWidth * 2 - 20
   },
   grayButton: {
     backgroundColor: '#c4c4c4'
   },
   blueButton: {
-    backgroundColor: 'blue'
+    backgroundColor: '#c7e2ed'
   },
   buttonText: {
-    color: 'white'
+    fontSize: 24, 
   }
 });
