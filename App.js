@@ -87,6 +87,15 @@ export default function App() {
       setAnswerValue(answerValue * 0.01);
     }
 
+    // if point button, add decimal point
+    // point is treated as an operator as it functions in much the same way
+    if(btnValue == '.'){
+      console.log('Point pressed');
+      // console.log(parseFloat(answerValue.toString() + '.5'));
+      // setAnswerValue(parseFloat(answerValue.toString() + '.0'));
+      setAnswerValue(parseFloat(answerValue.toString() + '.' + memoryValue.toString()));
+    }
+
     console.log(btnValue);
   }
 
@@ -95,7 +104,8 @@ export default function App() {
     if(value == '+' ||
        value == '-' ||
        value == 'X' ||
-       value == '/'){
+       value == '/' ||
+       value == '.'){
         return true;
     }
     return false;
@@ -153,41 +163,52 @@ export default function App() {
       <View style={styles.container}>
         {/* Results Window */}
         <View style={styles.resultContainer}>
-          <Text style={styles.result}>{answerValue}</Text>
+          <View style={styles.operator}>
+            {operatorValue == 0 ? '' : <Text style={styles.operatorText}>{operatorValue}</Text>}
+          </View>
+          <View style={styles.result}>
+            <Text style={styles.resultText}>{answerValue}</Text>
+          </View>
         </View>
-        
-        <View style={styles.row}>
-          <CalcButton btnStyles={[styles.button, styles.grayButton]} btnValue='C' />
-          <CalcButton btnStyles={[styles.button, styles.grayButton]} btnValue='+/-' />
-          <CalcButton btnStyles={[styles.button, styles.grayButton]} btnValue='%' />
-          <CalcButton btnStyles={[styles.button, styles.blueButton]} btnValue='/' />
-        </View>
+        {/* Calculator window */}
+        <View style={styles.calculatorContainer}>
+          {/* Draw lines to seperate the buttons */}
+          <View style={styles.borderLine}></View>
+          <View style={styles.borderLineVertical}></View>
 
-        <View style={styles.row}>
-          <CalcButton btnStyles={styles.button} btnValue={7} />
-          <CalcButton btnStyles={styles.button} btnValue={8} />
-          <CalcButton btnStyles={styles.button} btnValue={9} />
-          <CalcButton btnStyles={[styles.button, styles.blueButton]} btnValue='X' />
-        </View>
+          <View style={styles.row}>
+            <CalcButton btnStyles={[styles.button, styles.grayButton]} btnValue='C' />
+            <CalcButton btnStyles={[styles.button, styles.grayButton]} btnValue='+/-' />
+            <CalcButton btnStyles={[styles.button, styles.grayButton]} btnValue='%' />
+            <CalcButton btnStyles={[styles.button, styles.blueButton]} btnValue='/' />
+          </View>
 
-        <View style={styles.row}>
-          <CalcButton btnStyles={styles.button} btnValue={4} />
-          <CalcButton btnStyles={styles.button} btnValue={5} />
-          <CalcButton btnStyles={styles.button} btnValue={6} />
-          <CalcButton btnStyles={[styles.button, styles.blueButton]} btnValue='-' />
-        </View>
+          <View style={styles.row}>
+            <CalcButton btnStyles={styles.button} btnValue={7} />
+            <CalcButton btnStyles={styles.button} btnValue={8} />
+            <CalcButton btnStyles={styles.button} btnValue={9} />
+            <CalcButton btnStyles={[styles.button, styles.blueButton]} btnValue='X' />
+          </View>
 
-        <View style={styles.row}>
-          <CalcButton btnStyles={styles.button} btnValue={1} />
-          <CalcButton btnStyles={styles.button} btnValue={2} />
-          <CalcButton btnStyles={styles.button} btnValue={3} />
-          <CalcButton btnStyles={[styles.button, styles.blueButton]} btnValue='+' />
-        </View>
+          <View style={styles.row}>
+            <CalcButton btnStyles={styles.button} btnValue={4} />
+            <CalcButton btnStyles={styles.button} btnValue={5} />
+            <CalcButton btnStyles={styles.button} btnValue={6} />
+            <CalcButton btnStyles={[styles.button, styles.blueButton]} btnValue='-' />
+          </View>
 
-        <View style={styles.row}>
-          <CalcButton btnStyles={[styles.button, styles.wideButton]} btnValue={0} />
-          <CalcButton btnStyles={styles.button} btnValue='.' />
-          <CalcButton btnStyles={[styles.button, styles.blueButton]} btnValue='=' />
+          <View style={styles.row}>
+            <CalcButton btnStyles={styles.button} btnValue={1} />
+            <CalcButton btnStyles={styles.button} btnValue={2} />
+            <CalcButton btnStyles={styles.button} btnValue={3} />
+            <CalcButton btnStyles={[styles.button, styles.blueButton]} btnValue='+' />
+          </View>
+
+          <View style={styles.row}>
+            <CalcButton btnStyles={[styles.button, styles.wideButton]} btnValue={0} />
+            <CalcButton btnStyles={styles.button} btnValue='.' />
+            <CalcButton btnStyles={[styles.button, styles.blueButton]} btnValue='=' />
+          </View>
         </View>
         <StatusBar style="light content" />
       </View>
@@ -199,20 +220,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#e0e0e0',
-    alignItems: 'bottom',
-    justifyContent: 'flex-end',
+    backgroundColor: '#e0e0e0'
+  },
+  calculatorContainer: {
+    flex: 2,
   },
   resultContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
     backgroundColor: '#c0ccc9'
   },
-  result: {
+  operator: {
     flex: 1,
-    textAlign: 'right',
+    justifyContent: 'flex-end',
     margin: 10,
+  },
+  operatorText: {
+    fontSize: 24,
+    color: '#c0ccc9',
+    backgroundColor: '#3f4d49',
+  },
+  result: {
+    flex: 2,
+    justifyContent: 'center',
+    margin: 10,
+  },
+  resultText: {
     color: '#3f4d49',
     fontSize: 60,
   },
@@ -226,11 +260,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: "#e0e0e0",
-    borderRadius: 10,
-    shadowColor: "#8f8f8f",
+    borderRadius: 5,
+    shadowColor: "#8d8d8d",
     shadowOffset: {
-      width: 5,
-      height: 5,
+      width: 3,
+      height: 3,
     },
     shadowOpacity: 0.6,
     shadowRadius: 20,
@@ -263,5 +297,22 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 24, 
+  },
+  borderLine: {
+    position: 'absolute',
+    top: buttonWidth,
+    left: 10,
+    height: 2,
+    width: buttonWidth*4 -20,
+    backgroundColor: '#c1c1c1',
+  },
+  borderLineVertical: {
+    position: 'absolute',
+    top: 10,
+    right: buttonWidth,
+    width: 2,
+    height: buttonWidth*5 -20,
+    backgroundColor: '#c1c1c1',
   }
+
 });
