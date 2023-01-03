@@ -89,14 +89,11 @@ export default function App() {
     }
 
     // if point button, add decimal point
-    // point is treated as an operator as it functions in much the same way
     if(btnValue == '.'){
-      console.log('Point pressed');
-      
       // Check that answerValue is not already a floating point number
       if(!answerValue.toString().includes('.')){
-        // Append decimal point
-        setAnswerValue(answerValue + '.');
+        // Append decimal point and prepend 0 if readyToReplace
+        setAnswerValue(readyToReplace ? '0.' : answerValue + '.');
         setReadyToReplace(false);
       }
     }
