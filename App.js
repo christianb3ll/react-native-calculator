@@ -7,7 +7,8 @@ const buttonWidth = Dimensions.get('window').width / 4;
 
 export default function App() {
   // Setup the answer state
-  const [answerValue, setAnswerValue] = useState(0);
+  // answerValue must be a string in order to display point values
+  const [answerValue, setAnswerValue] = useState('0');
   
   // Stores a value in memory
   const [memoryValue, setMemoryValue] = useState(0);
@@ -43,7 +44,7 @@ export default function App() {
     // if clear button pressed
     if(btnValue == 'C'){
       // reset all values
-      setAnswerValue(0);
+      setAnswerValue('0');
       setMemoryValue(0);
       setOperatorValue(0);
       setReadyToReplace(true);
@@ -79,24 +80,26 @@ export default function App() {
 
     // if +/- button pressed set the value to positive/negative
     if(btnValue == '+/-'){
-      setAnswerValue(answerValue * -Math.sign(answerValue));
+      // setAnswerValue(answerValue * -Math.sign(answerValue));
     }
 
     // if percentage button, calculate percentage
     if(btnValue == '%'){
-      setAnswerValue(answerValue * 0.01);
+      setAnswerValue((parseFloat(answerValue) * 0.01).toString());
     }
 
     // if point button, add decimal point
     // point is treated as an operator as it functions in much the same way
     if(btnValue == '.'){
       console.log('Point pressed');
-      // console.log(parseFloat(answerValue.toString() + '.5'));
-      // setAnswerValue(parseFloat(answerValue.toString() + '.0'));
-      setAnswerValue(parseFloat(answerValue.toString() + '.' + memoryValue.toString()));
+      
+      // Check that answerValue is not already a floating point number
+      if(!answerValue.toString().includes('.')){
+        // Append decimal point
+        setAnswerValue(answerValue + '.');
+        setReadyToReplace(false);
+      }
     }
-
-    console.log(btnValue);
   }
 
   // Deterrmine if button value is an operator and return true/false
@@ -104,8 +107,7 @@ export default function App() {
     if(value == '+' ||
        value == '-' ||
        value == 'X' ||
-       value == '/' ||
-       value == '.'){
+       value == '/'){
         return true;
     }
     return false;
@@ -119,7 +121,7 @@ export default function App() {
       return number;
     } else {
       // Append number to previous value on screen
-      return parseInt(answerValue.toString() + number.toString());
+      return parseFloat(answerValue + number.toString());
     }
   }
 
@@ -135,23 +137,24 @@ export default function App() {
     switch (operatorValue) {
       case '+':
         // ADDITION
-        setAnswerValue(previous + current);
+        setAnswerValue((previous + current).toString());
         return answerValue;
       case '-':
         // SUBTRACTION
-        setAnswerValue(previous - current);
+        setAnswerValue((previous - current).toString());
         return answerValue;
       case 'X':
         // MULTIPLICATION
-        setAnswerValue(previous * current);
+        setAnswerValue((previous * current).toString());
         return answerValue;
       case '/':
         // DIVISION
-        setAnswerValue(previous / current);
+        setAnswerValue((previous / current).toString());
         return answerValue;
       default:
         // No calculation performed
         console.log('No Operand');
+        setAnswerValue(parseFloat(answerValue));
         return answerValue;
         break;
     }
