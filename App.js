@@ -11,7 +11,7 @@ export default function App() {
   const [answerValue, setAnswerValue] = useState('0');
   
   // Stores a value in memory
-  const [memoryValue, setMemoryValue] = useState(0);
+  const [memoryValue, setMemoryValue] = useState('0');
   // Stores the current operator
   const [operatorValue, setOperatorValue] = useState(0);
   // Determines if screen value is to be replaced
@@ -45,7 +45,7 @@ export default function App() {
     if(btnValue == 'C'){
       // reset all values
       setAnswerValue('0');
-      setMemoryValue(0);
+      setMemoryValue('0');
       setOperatorValue(0);
       setReadyToReplace(true);
     }
@@ -74,13 +74,15 @@ export default function App() {
       calculateEquals();
 
       // reset values
-      setMemoryValue(0);
+      setMemoryValue('0');
       setReadyToReplace(true);
     }
 
     // if +/- button pressed set the value to positive/negative
     if(btnValue == '+/-'){
-      // setAnswerValue(answerValue * -Math.sign(answerValue));
+      if(!readyToReplace){
+        setAnswerValue((parseFloat(answerValue) * -1).toString());
+      }
     }
 
     // if percentage button, calculate percentage
@@ -126,35 +128,35 @@ export default function App() {
     // initialise previous and current value variables
     var previous = parseFloat(memoryValue);
     var current = parseFloat(answerValue);
+    var sum = answerValue;
 
-    console.log('Memory Value: ' + memoryValue);
-    console.log('Answer Value: ' + answerValue);
-    console.log('Operator: ' + operatorValue);
-    
     switch (operatorValue) {
       case '+':
         // ADDITION
-        setAnswerValue((previous + current).toString());
-        return answerValue;
+        sum = (previous + current).toString();
+        break;
       case '-':
         // SUBTRACTION
-        setAnswerValue((previous - current).toString());
-        return answerValue;
+        sum = (previous - current).toString();
+        // setAnswerValue((previous - current).toString());
+        break;
       case 'X':
         // MULTIPLICATION
-        setAnswerValue((previous * current).toString());
-        return answerValue;
+        sum = (previous * current).toString();
+        // setAnswerValue((previous * current).toString());
+        break;
       case '/':
         // DIVISION
-        setAnswerValue((previous / current).toString());
-        return answerValue;
+        sum = (previous / current).toString();
+        // setAnswerValue((previous / current).toString());
+        break;
       default:
         // No calculation performed
-        console.log('No Operand');
-        setAnswerValue(parseFloat(answerValue));
-        return answerValue;
+        // setAnswerValue(parseFloat(answerValue).toString());
         break;
     }
+    setAnswerValue(sum);
+    return sum;
   }
 
   // Create the App view
