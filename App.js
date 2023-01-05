@@ -73,6 +73,7 @@ export default function App() {
       // Calculate Equals
       calculateEquals();
 
+      // Reset operator and memoryValue
       setMemoryValue('0');
       setOperatorValue(0);
       
@@ -81,7 +82,7 @@ export default function App() {
 
     // if +/- button pressed set the value to positive/negative
     if(btnValue == '+/-'){
-      if(!readyToReplace){
+      if(answerValue != '0'){
         setAnswerValue((parseFloat(answerValue) * -1).toString());
       }
     }
