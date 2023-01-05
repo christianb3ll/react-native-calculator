@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   },
   resultText: {
     color: '#3f4d49',
-    fontSize: 60,
+    fontSize: 48,
   },
   row: {
     flexDirection: 'row',
