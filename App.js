@@ -73,8 +73,9 @@ export default function App() {
       // Calculate Equals
       calculateEquals();
 
-      // reset values
       setMemoryValue('0');
+      setOperatorValue(0);
+      
       setReadyToReplace(true);
     }
 
@@ -138,21 +139,18 @@ export default function App() {
       case '-':
         // SUBTRACTION
         sum = (previous - current).toString();
-        // setAnswerValue((previous - current).toString());
         break;
       case 'X':
         // MULTIPLICATION
         sum = (previous * current).toString();
-        // setAnswerValue((previous * current).toString());
         break;
       case '/':
         // DIVISION
         sum = (previous / current).toString();
-        // setAnswerValue((previous / current).toString());
         break;
       default:
         // No calculation performed
-        // setAnswerValue(parseFloat(answerValue).toString());
+        
         break;
     }
     setAnswerValue(sum);
